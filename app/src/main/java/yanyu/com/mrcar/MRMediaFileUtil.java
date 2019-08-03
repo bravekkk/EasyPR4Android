@@ -31,7 +31,7 @@ public class MRMediaFileUtil {
         File mediaStorageDir = null;
         try
         {
-            mediaStorageDir = new File("/sdcard/"+ MRCarUtil.ApplicationDir+"/");
+            mediaStorageDir = new File("/sdcard/mrcar/");
         }
         catch (Exception e)
         {

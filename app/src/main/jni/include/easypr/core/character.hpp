@@ -25,12 +25,12 @@ namespace easypr {
     {
       m_characterMat = Mat();
       m_characterGrayMat = Mat();
-      m_characterPos = Rect();
+        m_characterPos = cv::Rect();
       m_characterStr = "";
       m_score = 0;
       m_isChinese = false;
       m_ostuLevel = 125;
-      m_center = Point(0, 0);
+      m_center = cv::Point(0, 0);
       m_index = 0;
     }
 
@@ -53,8 +53,8 @@ namespace easypr {
     inline void setCharacterGrayMat(Mat param) { m_characterGrayMat = param; }
     inline Mat getCharacterGrayMat() const { return m_characterGrayMat; }
 
-    inline void setCharacterPos(Rect param) { m_characterPos = param; }
-    inline Rect getCharacterPos() const { return m_characterPos; }
+    inline void setCharacterPos(cv::Rect param) { m_characterPos = param; }
+    inline cv::Rect getCharacterPos() const { return m_characterPos; }
 
     inline void setCharacterStr(String param) { m_characterStr = param; }
     inline String getCharacterStr() const { return m_characterStr; }
@@ -68,8 +68,8 @@ namespace easypr {
     inline void setOstuLevel(double param) { m_ostuLevel = param; }
     inline double getOstuLevel() const { return m_ostuLevel; }
 
-    inline void setCenterPoint(Point param) { m_center = param; }
-    inline Point getCenterPoint() const { return m_center; }
+    inline void setCenterPoint(cv::Point param) { m_center = param; }
+    inline cv::Point getCenterPoint() const { return m_center; }
 
     inline void setIndex(int param) { m_index = param; }
     inline int getIndex() const { return m_index; }
@@ -96,7 +96,7 @@ namespace easypr {
     Mat m_characterGrayMat;
 
     //! character rect
-    Rect m_characterPos;
+    cv::Rect m_characterPos;
 
     //! character str
     String m_characterStr;
@@ -111,7 +111,7 @@ namespace easypr {
     double m_ostuLevel;
 
     //! center point
-    Point m_center;
+    cv::Point m_center;
 
     //! the postion in the plate, from 1 to 7 normal
     int m_index;

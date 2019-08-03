@@ -1,8 +1,11 @@
 #ifndef EASYPR_CONFIG_H_
 #define EASYPR_CONFIG_H_
-
+#include "opencv2/opencv.hpp"
+#if CV_MAJOR_VERSION==3 && CV_MINOR_VERSION>=1
+#define CV_VERSION_THREE_TWO
+#else
 #define CV_VERSION_THREE_ZERO
-
+#endif
 namespace easypr {
 
   enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
@@ -26,16 +29,27 @@ namespace easypr {
     PR_DETECT_CMSER = 0x04,  /**Character detect type, using mser  */
   };
 
-static const char* kDefaultSvmPath = "/sdcard/mrcar/svm_hist.xml";
-static const char* kLBPSvmPath = "/sdcard/mrcar/svm_lbp.xml";
-static const char* kHistSvmPath = "/sdcard/mrcar/svm_hist.xml";
 
-static const char* kDefaultAnnPath = "/sdcard/mrcar/ann.xml";
-static const char* kChineseAnnPath = "/sdcard/mrcar/ann_chinese.xml";
-static const char* kGrayAnnPath = "/sdcard/mrcar/annCh.xml";
+#ifdef _WIN32
+    static std::string modeldir = "model";
+#else
+    extern std::string modeldir;
+#endif
+    
+static std::string kDefaultSvmPath = "svm_hist.xml";
+static std::string kLBPSvmPath = "svm_lbp.xml";
+static std::string kHistSvmPath = "svm_hist.xml";
+
+static std::string kDefaultAnnPath = "ann.xml";
+static std::string kChineseAnnPath = "ann_chinese.xml";
+static std::string kGrayAnnPath = "annCh.xml";
 
 //This is important to for key transform to chinese
-static const char* kChineseMappingPath = "/sdcard/mrcar/province_mapping.xml";
+#ifdef ANDROID
+    static std::string kChineseMappingPath = "province_mapping.xml";
+#else
+    static std::string kChineseMappingPath = "province_mapping";
+#endif
 
 typedef enum {
   kForward = 1, // correspond to "has plate"
@@ -131,7 +145,7 @@ private:\
   }
 
 // Load model. compatitable withe 3.0, 3.1 and 3.2
-#if CV_MAJOR_VERSION>=3
+#ifdef CV_VERSION_THREE_TWO
   #define LOAD_SVM_MODEL(model, path) \
     model = ml::SVM::load(path);
   #define LOAD_ANN_MODEL(model, path) \

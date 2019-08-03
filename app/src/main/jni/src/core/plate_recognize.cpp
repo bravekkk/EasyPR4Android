@@ -62,7 +62,7 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
     if (getResultShow()) {
       // param type: 0 detect, 1 recognize;
       int showType = 1;
-      if (0 == showType)
+      if (1 == showType)
         showDectectResults(img, plateVec, num);
       else
         showDectectResults(img, plateVecOut, num);

@@ -45,7 +45,7 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
   std::vector<Mat> matChars;
   std::vector<Mat> grayChars;
   Mat plateMat = plate.getPlateMat();
-  if (0) writeTempImage(plateMat, "plateMat/plate");
+  //if (0) writeTempImage(plateMat, "plateMat/plate");
   Color color;
   if (plate.getPlateLocateType() == CMSER) {
     color = plate.getPlateColor();

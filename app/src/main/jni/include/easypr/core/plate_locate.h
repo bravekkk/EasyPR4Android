@@ -43,7 +43,7 @@ class CPlateLocate {
   int sobelOper(const Mat& in, Mat& out, int blurSize, int morphW, int morphH);
 
 
-  bool rotation(Mat& in, Mat& out, const Size rect_size, const Point2f center,
+  bool rotation(Mat& in, Mat& out, const cv::Size rect_size, const Point2f center,
                 const double angle);
 
   void affine(const Mat& in, Mat& out, const double slope);

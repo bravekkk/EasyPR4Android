@@ -1,30 +1,20 @@
 package yanyu.com.mrcar;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by yanyu on 2016/8/19.
  */
+
 public class MRAssetUtil {
-    public static final String TAG = "MRAssetUtil";
+    //将dir中的path文件拷贝到SD卡上
     public static void CopyOneFile(String path,String dir, Resources Resid){
         File file=new File(String.format(dir+"/"+path));
         if(!file.exists())
@@ -36,6 +26,7 @@ public class MRAssetUtil {
             }
         }
     }
+    //将单个文件拷贝到SD卡上
     private static void copyFileFromAssetsToSDCard(String resname, String sdpath, Resources Resid) throws Throwable {
         InputStream is =Resid.getAssets().open(resname);
         OutputStream os = new FileOutputStream(sdpath);
@@ -47,28 +38,23 @@ public class MRAssetUtil {
         is.close();
         os.close();
     }
+    //将assetDir下的所有文件拷贝到SD卡上
     public static void CopyAssets(Context context,String assetDir, String dir) {
         String[] files;
         try {
-            // 获得Assets一共有几多文件
             files =context.getAssets().list(assetDir);
         } catch (IOException e1) {
             return;
         }
         File mWorkingPath = new File(dir);
-        // 如果文件路径不存在
         if (!mWorkingPath.exists()) {
-            // 创建文件夹
             if (!mWorkingPath.mkdirs()) {
-                // 文件夹创建不成功时调用
             }
         }
 
         for (int i = 0; i < files.length; i++) {
             try {
-                // 获得每个文件的名字
                 String fileName = files[i];
-                // 根据路径判断是文件夹还是文件
                 if (!fileName.contains(".")) {
                     if (0 == assetDir.length()) {
                         CopyAssets(context,fileName, dir + fileName + "/");

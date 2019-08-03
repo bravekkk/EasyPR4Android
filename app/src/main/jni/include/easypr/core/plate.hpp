@@ -107,17 +107,17 @@ namespace easypr {
     inline void setPlateLine(Vec4f param) { m_line = param; }
     inline Vec4f getPlateLine() const { return m_line; }
 
-    inline void setPlateLeftPoint(Point param) { m_leftPoint = param; }
-    inline Point getPlateLeftPoint() const { return m_leftPoint; }
+    inline void setPlateLeftPoint(cv::Point param) { m_leftPoint = param; }
+    inline cv::Point getPlateLeftPoint() const { return m_leftPoint; }
 
-    inline void setPlateRightPoint(Point param) { m_rightPoint = param; }
-    inline Point getPlateRightPoint() const { return m_rightPoint; }
+    inline void setPlateRightPoint(cv::Point param) { m_rightPoint = param; }
+    inline cv::Point getPlateRightPoint() const { return m_rightPoint; }
 
-    inline void setPlateMergeCharRect(Rect param) { m_mergeCharRect = param; }
-    inline Rect getPlateMergeCharRect() const { return m_mergeCharRect; }
+    inline void setPlateMergeCharRect(cv::Rect param) { m_mergeCharRect = param; }
+    inline cv::Rect getPlateMergeCharRect() const { return m_mergeCharRect; }
 
-    inline void setPlateMaxCharRect(Rect param) { m_maxCharRect = param; }
-    inline Rect getPlateMaxCharRect() const { return m_maxCharRect; }
+    inline void setPlateMaxCharRect(cv::Rect param) { m_maxCharRect = param; }
+    inline cv::Rect getPlateMaxCharRect() const { return m_maxCharRect; }
 
     inline void setPlatDistVec(Vec2i param) { m_distVec = param; }
     inline Vec2i getPlateDistVec() const { return m_distVec; }
@@ -165,11 +165,11 @@ namespace easypr {
     Vec4f m_line;
 
     //! left point and right point;
-    Point m_leftPoint;
-    Point m_rightPoint;
+    cv::Point m_leftPoint;
+    cv::Point m_rightPoint;
 
-    Rect m_mergeCharRect;
-    Rect m_maxCharRect;
+    cv::Rect m_mergeCharRect;
+    cv::Rect m_maxCharRect;
 
     std::vector<CCharacter> m_mserCharVec;
     std::vector<CCharacter> m_slwdCharVec;

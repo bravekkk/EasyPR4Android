@@ -31,18 +31,18 @@ class CCharsSegment {
   Mat preprocessChar(Mat in);
 
   //! to find the position of chinese
-  Rect GetChineseRect(const Rect rectSpe);
+  cv::Rect GetChineseRect(const cv::Rect rectSpe);
 
   //! find the character refer to city, like "suA" A
-  int GetSpecificRect(const std::vector<Rect>& vecRect);
+  int GetSpecificRect(const std::vector<cv::Rect>& vecRect);
 
   //! Do two things
   //  1.remove rect in the left of city character
   //  2.from the city rect, to the right, choose 6 rects
-  int RebuildRect(const std::vector<Rect>& vecRect, std::vector<Rect>& outRect,
+  int RebuildRect(const std::vector<cv::Rect>& vecRect, std::vector<cv::Rect>& outRect,
                   int specIndex);
 
-  int SortRect(const std::vector<Rect>& vecRect, std::vector<Rect>& out);
+  int SortRect(const std::vector<cv::Rect>& vecRect, std::vector<cv::Rect>& out);
 
   inline void setLiuDingSize(int param) { m_LiuDingSize = param; }
   inline void setColorThreshold(int param) { m_ColorThreshold = param; }

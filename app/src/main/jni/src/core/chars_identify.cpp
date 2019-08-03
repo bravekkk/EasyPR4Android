@@ -4,6 +4,9 @@
 #include "easypr/core/feature.h"
 #include "easypr/core/params.h"
 #include "easypr/config.h"
+#ifdef __APPLE__
+#include "GlobalData.hpp"
+#endif
 
 using namespace cv;
 
@@ -19,12 +22,16 @@ CharsIdentify* CharsIdentify::instance() {
 }
 
 CharsIdentify::CharsIdentify() {
-  LOAD_ANN_MODEL(ann_, kDefaultAnnPath);
-  LOAD_ANN_MODEL(annChinese_, kChineseAnnPath);
-  LOAD_ANN_MODEL(annGray_, kGrayAnnPath);
+#ifdef __APPLE__
+  modeldir=GlobalData::mainBundle()+"/model";
+  std::cout<<"modeldir: "<<modeldir<<std::endl;
+#endif
+  LOAD_ANN_MODEL(ann_, modeldir+"/"+kDefaultAnnPath);
+  LOAD_ANN_MODEL(annChinese_, modeldir+"/"+kChineseAnnPath);
+  LOAD_ANN_MODEL(annGray_, modeldir+"/"+kGrayAnnPath);
 
   kv_ = std::shared_ptr<Kv>(new Kv);
-  kv_->load(kChineseMappingPath);
+  kv_->load(modeldir+"/"+kChineseMappingPath);
 
   extractFeature = getGrayPlusProject;
 }

@@ -2069,7 +2069,7 @@ void clearBorder(const Mat &img, Rect& cropRect) {
           slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, plate.getOstuLevel(), ratioWindow,
                             threshIsCharacter,
                             maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
-          if (1 && showDebug) {
+          if (0 && showDebug) {
             std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
           }
           for (auto window : slideRightWindow) {
@@ -2127,7 +2127,7 @@ void clearBorder(const Mat &img, Rect& cropRect) {
         destroyWindow("match");
       }
 
-      if (1) {
+      if (0) {
         std::stringstream ss(std::stringstream::in | std::stringstream::out);
         ss << "resources/image/tmp/plateDetect/plate_" << img_index << "_" << the_color << ".jpg";
         imwrite(ss.str(), result);

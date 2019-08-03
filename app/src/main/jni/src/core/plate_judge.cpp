@@ -3,6 +3,10 @@
 #include "easypr/core/core_func.h"
 #include "easypr/core/params.h"
 
+#ifdef __APPLE__
+#include "GlobalData.hpp"
+#endif
+
 namespace easypr {
 
   PlateJudge* PlateJudge::instance_ = nullptr;
@@ -16,12 +20,16 @@ namespace easypr {
 
   PlateJudge::PlateJudge() { 
     bool useLBP = false;
+#ifdef __APPLE__
+      modeldir=GlobalData::mainBundle()+"/model";
+      std::cout<<"modeldir: "<<modeldir<<std::endl;
+#endif
     if (useLBP) {
-      LOAD_SVM_MODEL(svm_, kLBPSvmPath);
+      LOAD_SVM_MODEL(svm_, modeldir+"/"+kLBPSvmPath);
       extractFeature = getLBPFeatures;
     }
     else {
-      LOAD_SVM_MODEL(svm_, kHistSvmPath);
+      LOAD_SVM_MODEL(svm_, modeldir+"/"+kHistSvmPath);
       extractFeature = getHistomPlusColoFeatures;
     }
   }
