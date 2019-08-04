@@ -32,8 +32,10 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 //javac MRCarUtil.java
 //javap -s MRCarUtil
 static JNINativeMethod sNativeMethods[] = {
-        {"plateRecognition", "(JJ)Ljava/lang/String;", (void*) plateRecognition},
         {"init","(Ljava/lang/String;)Z",(void*) init},
+        {"plateRecognition", "(JJ)Ljava/lang/String;", (void*) plateRecognition},
+        {"plateLive", "(J)Ljava/lang/String;", (void*) plateLive},
+        {"plateNV21", "([BII)Ljava/lang/String;",(void*)plateNV21},
         {"release","()I",(void*)release},
 };
 

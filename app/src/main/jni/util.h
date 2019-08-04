@@ -20,28 +20,5 @@ std::string to_string(T value)
     os << value ;
     return os.str() ;
 }
-class MRTimer
-{
-public:
-    MRTimer(){cost_time = 0;}
-    void log4debug(const char * prefix=NULL)
-    {
-        long start = ((long)t_start.tv_sec)*1000+(long)t_start.tv_usec/1000;
-        long end = ((long)t_end.tv_sec)*1000+(long)t_end.tv_usec/1000;
-        cost_time = end - start;
-        LOGD("%s %ld ms\n",prefix,cost_time);
-    }
-    void start()
-    {
-        gettimeofday(&t_start, NULL);
-    }
-    void stop()
-    {
-        gettimeofday(&t_end, NULL);
-    }
-private:
-        struct timeval t_start,t_end;
-        long cost_time;
-};
 
 #endif

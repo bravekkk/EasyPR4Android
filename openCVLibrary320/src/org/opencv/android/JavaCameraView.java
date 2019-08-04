@@ -192,8 +192,9 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                     size  = size * ImageFormat.getBitsPerPixel(params.getPreviewFormat()) / 8;
                     mBuffer = new byte[size];
 
-                    mCamera.addCallbackBuffer(mBuffer);
-                    mCamera.setPreviewCallbackWithBuffer(this);
+                    //mCamera.addCallbackBuffer(mBuffer);
+                    //mCamera.setPreviewCallbackWithBuffer(this);
+                    mCamera.setPreviewCallback(this);
 
                     mFrameChain = new Mat[2];
                     mFrameChain[0] = new Mat(mFrameHeight + (mFrameHeight/2), mFrameWidth, CvType.CV_8UC1);

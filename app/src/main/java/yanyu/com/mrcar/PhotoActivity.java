@@ -26,7 +26,7 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
-public class MainActivity extends Activity {
+public class PhotoActivity extends Activity {
     private static final String TAG = "MRCar";
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 200;
@@ -59,12 +59,12 @@ public class MainActivity extends Activity {
             final String license=MRCar.plateRecognition(m.getNativeObjAddr(), m.getNativeObjAddr());
             Utils.matToBitmap(m, bmp);
             runOnUiThread(new Runnable() {
-                  @Override
-                  public void run() {
-                      et.setText(license);
-                      im.setImageBitmap(bmp);
-                  }
-              }
+                              @Override
+                              public void run() {
+                                  et.setText(license);
+                                  im.setImageBitmap(bmp);
+                              }
+                          }
             );
         }
         catch (Exception e)
@@ -121,8 +121,8 @@ public class MainActivity extends Activity {
         buttonFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
         im.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
                     im.setImageBitmap(Originbitmap);
                     et.setText(""); }
                 b2Recognition=!b2Recognition;
-                }
+            }
         });
         initBitmap();
     }
