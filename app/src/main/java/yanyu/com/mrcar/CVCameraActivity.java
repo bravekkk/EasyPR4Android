@@ -7,15 +7,17 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
@@ -34,24 +36,10 @@ public class CVCameraActivity extends Activity implements CameraBridgeViewBase.C
     private boolean killed = false;
     private boolean isMatready=false;
     private Mat mImg2Recog;
-
+    private TextView tv;
     private Mat mRgba;
-    private MRCameraView mOpenCvCameraView;
-    private OnRecognizedCallBack regcallback=new OnRecognizedCallBack() {
-        @Override
-        public void onRecognized(final String str) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast=Toast.makeText(CVCameraActivity.this,str,Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-        }
-    };
-    public interface OnRecognizedCallBack{
-        public void onRecognized(String str);
-    }
+    private CameraBridgeViewBase mOpenCvCameraView;
+    private BeepManager beepManager;
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -80,19 +68,14 @@ public class CVCameraActivity extends Activity implements CameraBridgeViewBase.C
         }
     };
     private boolean switchCamera(){
-        if(mOpenCvCameraView != null){
-            mOpenCvCameraView.disableView();
-        }
         if(numberOfCameras >= 2){
-            if(mCameraId == 0){
-                mOpenCvCameraView.setCameraIndex(1);
-                mCameraId = 1;
-            } else {
-                mOpenCvCameraView.setCameraIndex(0);
-                mCameraId = 0;
+            if(mOpenCvCameraView != null){
+                mOpenCvCameraView.disableView();
             }
+            mCameraId = mCameraId^1;
+            mOpenCvCameraView.setCameraIndex(mCameraId);
             mOpenCvCameraView.enableView();
-        }else{
+        } else{
             return false;
         }
         return true;
@@ -109,13 +92,18 @@ public class CVCameraActivity extends Activity implements CameraBridgeViewBase.C
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCameraIndex(0);
         mOpenCvCameraView.setCvCameraViewListener(this);
+        mOpenCvCameraView.setMaxFrameSize(640,480);
+        mOpenCvCameraView.enableFpsMeter();
         mOpenCvCameraView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchCamera();
+                //switchCamera();
             }
         });
         numberOfCameras = Camera.getNumberOfCameras();
+        tv=findViewById(R.id.rstLic2);
+        beepManager = new BeepManager(this);
+        beepManager.setPlayBeep(true);
     }
     private boolean isRequiredPermissionsGranted() {
         for (String permission : REQUIRED_PERMISSIONS) {
@@ -138,23 +126,36 @@ public class CVCameraActivity extends Activity implements CameraBridgeViewBase.C
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
+        final Mat[] tmp = new Mat[1];
         thread = new Thread() {
             @Override
             public void run() {
+
                 while(!killed){
                     if(!isMatready){
                         continue;
                     }
-                    Mat tmp;
                     synchronized (mImg2Recog) {
-                        tmp=mImg2Recog.clone();
+                        tmp[0] =mImg2Recog.clone();
                         isMatready = false;
                     }
                     if(mlibLoaded){
-                        String str=MRCar.plateLive(tmp.nativeObj);
+                        final String str=MRCar.plateLive(tmp[0].nativeObj);
                         Log.i(TAG,str);
                         if(str.length()>=6){
-                            regcallback.onRecognized(str);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tv.setText(str);
+                                    beepManager.playBeepSoundAndVibrate();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            tv.setText("");
+                                        }
+                                    },3000);
+                                }
+                            });
                         }
                     }
                 }
@@ -162,11 +163,18 @@ public class CVCameraActivity extends Activity implements CameraBridgeViewBase.C
         };
         thread.start();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mOpenCvCameraView!=null)
+            mOpenCvCameraView.disableView();
+        beepManager.close();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mOpenCvCameraView!=null)
-            mOpenCvCameraView.disableView();
         if(mlibLoaded){
             MRCar.release();
             mlibLoaded=false;
@@ -179,6 +187,13 @@ public class CVCameraActivity extends Activity implements CameraBridgeViewBase.C
 
     @Override
     public void onCameraViewStarted(int width, int height) {
+        Camera myCamera = ((JavaCameraView) mOpenCvCameraView).getCamera();
+        Camera.Parameters mparameters = myCamera.getParameters();
+        mparameters.setAutoExposureLock(false);
+        mparameters.setAutoWhiteBalanceLock(false);
+        mparameters.setPreviewFpsRange(0,5);
+//            mparameters.setPreviewFormat(ImageFormat.JPEG);
+        myCamera.setParameters(mparameters);
         mRgba = new Mat();
         mImg2Recog=mRgba.clone();
     }

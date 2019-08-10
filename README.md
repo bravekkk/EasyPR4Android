@@ -2,9 +2,9 @@
 
 EasyPR4Android，基于[EasyPR](https://github.com/liuruoze/EasyPR)1.6的android实现, 提供编译好的[mrcar.apk](mrcar.apk)安装运行demo.
 
-Note:预编译好的apk只有图片识别方式, 实时预览识别需自己编译。
-
 ### 更新：
+
+* 摄像头实时预览，多线程处理，尽享流畅体验
 
 * 升级到1.6版
 
@@ -17,6 +17,10 @@ Note:预编译好的apk只有图片识别方式, 实时预览识别需自己编�
 * 将模型路径带入初始化函数中使得模型位置可以自由指定
 
 * 采用CMake大幅简化ndk开发的配置
+
+![preview](preview.png)
+
+![live](cameralive.png)
 
 ![mrcar](mrcar.png)
 
